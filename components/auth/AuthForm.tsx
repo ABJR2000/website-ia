@@ -27,8 +27,8 @@ const COPY: Record<
   },
 };
 
-// Where authenticated users land. Will point to the snippets dashboard later.
-const AFTER_AUTH_PATH = "/";
+// Where authenticated users land.
+const AFTER_AUTH_PATH = "/dashboard";
 
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();

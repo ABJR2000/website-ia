@@ -9,7 +9,7 @@ type GuardMode = "private" | "guest";
 // private: only signed-in users. guest: only signed-out users (login/register).
 const REDIRECT_TO: Record<GuardMode, string> = {
   private: "/login",
-  guest: "/",
+  guest: "/dashboard",
 };
 
 export function AuthGuard({ mode, children }: { mode: GuardMode; children: ReactNode }) {
