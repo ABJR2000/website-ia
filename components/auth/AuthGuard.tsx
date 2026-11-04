@@ -26,7 +26,7 @@ export function AuthGuard({ mode, children }: { mode: GuardMode; children: React
 
   if (loading || !allowed) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-50 text-sm text-zinc-500">
+      <div className="flex flex-1 items-center justify-center text-sm text-zinc-500">
         Loading...
       </div>
     );

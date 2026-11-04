@@ -6,6 +6,7 @@ Built as a focused MVP: small surface, no unnecessary dependencies, clear bounda
 
 ## Features
 
+- One-click demo account, so visitors can try the app without registering.
 - Email and password authentication (sign up, sign in, sign out).
 - Create, list, edit and delete your own snippets.
 - Fixed categories (`javascript`, `typescript`, `python`, `sql`, `bash`, `css`, `html`, `note`, `other`).
@@ -45,6 +46,8 @@ components/
   dashboard/              Container: owns snippet state and Supabase calls
   snippets/               Presentational: form, list, item (render + emit events)
 hooks/useSession.ts       Current session, synced with onAuthStateChange
+components/layout/Navbar.tsx  Global navigation, adapts to the auth state
+lib/config.ts             App name and optional demo account (env-driven)
 lib/supabase.ts           Single Supabase client, fails fast on missing env vars
 lib/snippets.ts           Data access: list, create, update, delete
 supabase/migrations/      SQL schema, RLS policies and grants
@@ -81,6 +84,10 @@ Create a `.env.local` file in the project root:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+
+# Optional: shows a "Try the demo account" button on /login
+NEXT_PUBLIC_DEMO_EMAIL=demo@example.com
+NEXT_PUBLIC_DEMO_PASSWORD=choose-a-demo-password
 ```
 
 Find both values in the Supabase dashboard:
@@ -89,6 +96,7 @@ Find both values in the Supabase dashboard:
 |----------|-------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Project Settings → Data API → Project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Project Settings → API Keys → Publishable key (or the legacy `anon` key) |
+| `NEXT_PUBLIC_DEMO_EMAIL` / `NEXT_PUBLIC_DEMO_PASSWORD` | Credentials of the demo user you create in step 4 (optional) |
 
 > The variable name must be `NEXT_PUBLIC_SUPABASE_ANON_KEY`, even if you copy the newer *publishable* key. Restart the dev server after editing `.env.local`.
 
@@ -101,7 +109,13 @@ In the Supabase dashboard, open **SQL Editor** and run the migrations in order:
 
 Optional, for faster local testing: disable **Authentication → Providers → Email → Confirm email** so sign-up logs you in immediately.
 
-### 4. Run
+### 4. Create the demo account (optional)
+
+In **Authentication → Users → Add user → Create new user**, enter the email and password from `NEXT_PUBLIC_DEMO_EMAIL` / `NEXT_PUBLIC_DEMO_PASSWORD` and check **Auto Confirm User**. Then sign in once and add a few sample snippets so visitors land on a populated dashboard.
+
+> The demo credentials are public on purpose (they are shown on the login page). Use a throwaway account with no real data. All visitors share it, so they can see and edit each other's demo snippets.
+
+### 5. Run
 
 ```bash
 npm run dev

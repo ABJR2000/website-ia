@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { SnippetForm } from "@/components/snippets/SnippetForm";
 import { SnippetList } from "@/components/snippets/SnippetList";
-import { useSession } from "@/hooks/useSession";
 import {
   createSnippet,
   deleteSnippet,
@@ -12,11 +11,9 @@ import {
   type NewSnippet,
   type Snippet,
 } from "@/lib/snippets";
-import { supabase } from "@/lib/supabase";
 
 // Container: owns snippet state and talks to Supabase; children only render and emit events.
 export function DashboardView() {
-  const { session } = useSession();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,21 +50,9 @@ export function DashboardView() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-50 px-4 py-8">
+    <main className="flex-1 px-4 py-8">
       <div className="mx-auto max-w-3xl space-y-8">
-        <header className="flex items-center justify-between gap-4">
-          <div className="min-w-0">
-            <h1 className="text-2xl font-semibold text-zinc-900">My snippets</h1>
-            <p className="truncate text-sm text-zinc-500">{session?.user.email}</p>
-          </div>
-          <button
-            type="button"
-            onClick={() => supabase.auth.signOut()}
-            className="shrink-0 rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
-          >
-            Sign out
-          </button>
-        </header>
+        <h1 className="text-2xl font-semibold text-zinc-900">My snippets</h1>
 
         <SnippetForm heading="New snippet" submitLabel="Save snippet" onSubmit={handleCreate} />
 
